@@ -1,0 +1,19 @@
+load("@build_bazel_rules_apple//apple:apple.bzl", "apple_dynamic_xcframework_import")
+load("@build_bazel_rules_ios//rules:framework.bzl", "apple_framework")
+
+apple_dynamic_xcframework_import(
+    name = "PPRiskMagnes",
+    xcframework_imports = glob(["PrebuiltFramework/PPRiskMagnes.xcframework/**"]),
+)
+
+apple_framework(
+    name = "Module1",
+    srcs = ["Module1/Source1.swift"],
+    deps = [":PPRiskMagnes"],
+)
+
+apple_framework(
+    name = "Module2",
+    srcs = ["Module2/Source2.swift"],
+    deps = [":Module1"],
+)
