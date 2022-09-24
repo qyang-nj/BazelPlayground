@@ -1,0 +1,77 @@
+# This genrule will dump predefined genrule variables
+# > bazel build //:ShowGenruleVariables
+# > cat bazel-bin/GenruleVariables.txt
+genrule(
+    name = "ShowGenruleVariables",
+    srcs = [
+        "Sources/src1.txt",
+        "Sources/src2.txt",
+    ],
+    outs = ["GenruleVariables.txt"],
+    cmd = """cat <<EOF > $@
+COMPILATION_MODE: $(COMPILATION_MODE)
+BINDIR: $(BINDIR)
+GENDIR: $(GENDIR)
+TARGET_CPU: $(TARGET_CPU)
+
+package_name: {}
+pwd: $$(pwd)
+
+SRCS: $(SRCS)
+OUTS: $(OUTS)
+RULEDIR: $(RULEDIR)
+
+EOF
+""".format(package_name()),
+)
+
+# This genrule demonstrates that Bazel genrule can actually change source file.
+# > bazel build //:ModifySource # runtime error for violating sandbox
+# > bazel build //:ModifySource --spawn_strategy=standalone # succeeds and src1.txt is changed
+genrule(
+    name = "ModifySource",
+    srcs = [
+        "Sources/src1.txt",
+    ],
+    outs = ["ModifySource.txt"],
+    cmd = """
+    touch $@
+    echo "hello" > $<
+""",
+)
+
+### This genrule demonstrates the $(locations) of a filegroup.
+### The filegroup can be added to srcs field
+filegroup(
+    name = "FileGroup",
+    srcs = [
+        "Sources/src1.txt",
+        "Sources/src2.txt",
+    ],
+)
+
+genrule(
+    name = "FileGroupLocation",
+    outs = ["Location.txt"],
+    srcs = [
+        ":FileGroup",
+        "Sources/src3.txt",
+    ],
+    cmd = """cat <<EOF > $@
+(locations :FileGroup): $(locations :FileGroup)
+(locations :Sources/src3.txt): $(locations :Sources/src3.txt)
+SRCS: $(SRCS)
+EOF
+""",
+)
+
+# WIP: This genrule demonstrates how to create a genrule that is sensitive to Xcode version change
+genrule(
+    name = "XcodeVersion",
+    srcs = [],
+    outs = ["XcodeVersion.txt"],
+    cmd = """
+    xcrun xcodebuild -version > $@
+""",
+    tools = ["@local_config_xcode//:host_xcodes"],
+)
