@@ -1,0 +1,26 @@
+load("@build_bazel_rules_ios//rules:framework.bzl", "apple_framework")
+
+objc_library(
+    name = "Lib1",
+    includes = ["Header1"],
+    srcs = ["Empty.m"],
+)
+
+objc_library(
+    name = "Lib2",
+    includes = ["Header2"],
+    srcs = ["Empty.m"],
+    deps = [":Lib1"],
+)
+
+apple_framework(
+    name = "Framework1",
+    srcs = ["Empty.swift"],
+    deps = [":Lib2"],
+)
+
+apple_framework(
+    name = "Framework2",
+    srcs = ["Empty.swift"],
+    deps = [":Framework1"],
+)
