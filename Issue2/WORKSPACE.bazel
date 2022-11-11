@@ -1,0 +1,42 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+git_repository(
+    name = "build_bazel_rules_apple",
+    remote = "https://github.com/bazelbuild/rules_apple.git",
+    commit = "418dd7847c930055e13b4ddb8b203db341c484ee",
+    shallow_since = "1657041009 -0700",
+)
+
+git_repository(
+    name = "build_bazel_rules_ios",
+    remote = "https://github.com/bazel-ios/rules_ios.git",
+    commit = "b2253f587b75a16a9b51f7380d42a871621aa39a",
+    shallow_since = "1667891422 -0800"
+)
+
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "d0f5f605d0d656007ce6c8b5a82df3037e1d8fe8b121ed42e536f569dec16113",
+    strip_prefix = "protobuf-3.14.0",
+    urls = [
+        "https://mirror.bazel.build/github.com/protocolbuffers/protobuf/archive/v3.14.0.tar.gz",
+        "https://github.com/protocolbuffers/protobuf/archive/v3.14.0.tar.gz",
+    ],
+)
+
+load("@build_bazel_rules_apple//apple:repositories.bzl", "apple_rules_dependencies")
+apple_rules_dependencies()
+
+load("@build_bazel_rules_swift//swift:repositories.bzl","swift_rules_dependencies")
+swift_rules_dependencies()
+
+load("@build_bazel_apple_support//lib:repositories.bzl", "apple_support_dependencies")
+apple_support_dependencies()
+
+load("@build_bazel_rules_ios//rules:repositories.bzl", "rules_ios_dependencies")
+rules_ios_dependencies()
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+protobuf_deps()
+

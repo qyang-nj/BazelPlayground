@@ -1,0 +1,35 @@
+load("@build_bazel_rules_ios//rules:framework.bzl", "apple_framework")
+load("@build_bazel_rules_apple//apple:apple.bzl", "apple_static_framework_import")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+
+apple_static_framework_import(
+    name = "FBSDKCoreKit",
+    framework_imports = glob(["FBSDKCoreKit/iOS/FBSDKCoreKit.framework/**"]),
+)
+
+apple_static_framework_import(
+    name = "FBSDKLoginKit",
+    framework_imports = glob(["FBSDKLoginKit/iOS/FBSDKLoginKit.framework/**"]),
+    deps = [":FBSDKCoreKit"]
+)
+
+swift_library(
+    name = "Foo_swift_library",
+    srcs = ["Foo.swift"],
+    deps = [":FBSDKLoginKit"],
+)
+
+apple_framework(
+    name = "Foo_apple_framework",
+    srcs = ["Foo.swift"],
+    deps = [":FBSDKLoginKit"],
+)
+
+apple_framework(
+    name = "Bar",
+    srcs = ["Bar.swift"],
+    deps = [
+        # ":Foo_swift_library",
+        ":Foo_apple_framework",
+    ],
+)

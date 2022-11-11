@@ -1,0 +1,9 @@
+build --verbose_failures
+
+build --apple_platform_type=ios
+build --cpu ios_x86_64
+build --ios_simulator_device="iPhone 13"
+
+build --features=apple.virtualize_frameworks
+build --features=swift.vfsoverlay
+build --features=swift.use_global_module_cache
