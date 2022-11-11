@@ -8,3 +8,6 @@ This is sample code to reproduce a bug in `rules_ios` -- when enabling `--featur
 
 ## Investigation
 The `includes` field of `objc_library` should be propagated to all the reverse deps. This is true when the deps are `objc_library`, `swift_library`, `apple_framework` without `virtualize_frameworks`, but it's not true for `apple_framework` with `virtualize_frameworks`.
+
+## Fix
+[This change](https://github.com/qyang-nj/rules_ios/pull/4) addresses this problem.

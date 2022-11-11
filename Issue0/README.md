@@ -17,3 +17,6 @@ The same build error will happen if we use `--features=swift.cacheable_swiftmodu
 
 ## Investigation
 With either `--compilation_mode=dbg` or `--features=swift.cacheable_swiftmodules`, `swift_library` will stop passing `-serialize-debugging-options` to swiftc. Unfortunately, it seems we are relying on the search paths embedded in `.swiftmodule` for transitive framework imports. We should explicitly provide the search paths to swiftc.
+
+## Fix
+[This change](https://github.com/qyang-nj/rules_ios/pull/3) addresses this problem.

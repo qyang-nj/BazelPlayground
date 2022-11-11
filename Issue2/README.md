@@ -27,3 +27,9 @@ apple_framework(
     ...
 )
 ```
+
+## Repro
+`bazel build //:Bar -s` and check the swift compile arg file (a file looks like `bazel-out/ios-x86_64-applebin_ios-ios_x86_64-fastbuild-ST-a837aa188e32/bin/Bar.swiftmodule-0.params`). `-FFBSDKCoreKit/iOS` and `-FFBSDKLoginKit/iOS` are not present in the file.
+
+## Fix
+[This change](https://github.com/qyang-nj/rules_ios/pull/4) addresses this problem.
