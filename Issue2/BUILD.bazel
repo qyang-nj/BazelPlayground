@@ -20,7 +20,7 @@ swift_library(
 )
 
 apple_framework(
-    name = "Foo_apple_framework",
+    name = "Foo",
     srcs = ["Foo.swift"],
     deps = [":FBSDKLoginKit"],
 )
@@ -30,6 +30,6 @@ apple_framework(
     srcs = ["Bar.swift"],
     deps = [
         # ":Foo_swift_library",
-        ":Foo_apple_framework",
+        ":Foo",
     ],
 )
