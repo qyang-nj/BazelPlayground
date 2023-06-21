@@ -1,0 +1,18 @@
+load("@build_bazel_rules_ios//rules:app.bzl", "ios_application")
+
+ios_application(
+    name = "SampleApp",
+    srcs = glob(["Sources/*.swift"]),
+    bundle_id = "com.airbnb.BazelSample",
+    minimum_os_version = "15.0",
+    app_icons = [
+        "//Resources:AppIcon",
+    ],
+    resources = [
+        "//Resources:Assets",
+    ],
+    deps = [
+        "//Libraries/ASwiftModule:ASwiftModule",
+        "//Libraries/SecondSwiftModule:SecondSwiftModule",
+    ]
+)

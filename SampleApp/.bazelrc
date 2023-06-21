@@ -1,0 +1,13 @@
+build --cpu=ios_sim_arm64
+build --ios_simulator_device="iPhone 13"
+
+# Execution Strategy
+build --spawn_strategy=local
+build --strategy=SwiftCompile=local
+
+# Speed Up Build
+build --features=apple.virtualize_frameworks
+build --features=apple.skip_codesign_simulator_bundles
+build --features=swift.vfsoverlay
+build --features=swift.use_global_module_cache
+build --features=-swift.index_while_building
