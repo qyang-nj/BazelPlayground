@@ -1,5 +1,5 @@
 load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
-load("@build_bazel_rules_ios//rules:test.bzl", "ios_unit_test")
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_unit_test")
 load("//:versions.bzl", "MINIMUM_OS_VERSION")
 
 swift_library(
@@ -9,11 +9,15 @@ swift_library(
     visibility = ["//visibility:public"],
 )
 
+swift_library(
+    name = "ASwiftModuleTestsLibrary",
+    srcs = glob(["Tests/**/*.swift"]),
+    deps = [":ASwiftModule"],
+    visibility = ["//visibility:public"],
+)
+
 ios_unit_test(
     name = "ASwiftModuleTests",
-    srcs = glob([
-        "Tests/**/*.swift",
-    ]),
     minimum_os_version = MINIMUM_OS_VERSION,
-    deps = [":ASwiftModule"],
+    deps = [":ASwiftModuleTestsLibrary"],
 )

@@ -1,13 +1,10 @@
-load("@build_bazel_rules_ios//rules:framework.bzl", "apple_framework")
-load("//:versions.bzl", "MINIMUM_OS_VERSION")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
 
-apple_framework(
+swift_library(
     name = "YetAnotherSwiftModule",
+    module_name = "YetAnotherSwiftModule",
     srcs = glob([
         "Sources/**/*.swift",
     ]),
-    platforms = {
-        "ios": MINIMUM_OS_VERSION
-    },
     visibility = ["//Libraries/SecondSwiftModule:__pkg__"],
 )

@@ -1,18 +1,34 @@
-load("@build_bazel_rules_ios//rules:app.bzl", "ios_application")
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_application")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+load("//:versions.bzl", "MINIMUM_OS_VERSION")
+
+swift_library(
+    name = "AppLibrary",
+    srcs = glob(["Sources/*.swift"]),
+    deps = [
+        "//Libraries/ASwiftModule:ASwiftModule",
+        "//Libraries/SecondSwiftModule:SecondSwiftModule",
+    ]
+)
 
 ios_application(
     name = "SampleApp",
-    srcs = glob(["Sources/*.swift"]),
-    bundle_id = "com.airbnb.BazelSample",
-    minimum_os_version = "15.0",
+    bundle_id = "com.qyang.SampleApp",
+    minimum_os_version = MINIMUM_OS_VERSION,
+    families = [
+        "iphone",
+        "ipad",
+    ],
     app_icons = [
         "//Resources:AppIcon",
     ],
     resources = [
         "//Resources:Assets",
     ],
+    infoplists = [
+        ":Info.plist"
+    ],
     deps = [
-        "//Libraries/ASwiftModule:ASwiftModule",
-        "//Libraries/SecondSwiftModule:SecondSwiftModule",
+        ":AppLibrary",
     ]
 )
