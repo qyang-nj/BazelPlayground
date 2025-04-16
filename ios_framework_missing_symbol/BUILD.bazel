@@ -1,0 +1,55 @@
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_framework", "ios_application")
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+
+swift_library(
+    name = "FrameworkLibrary",
+    srcs = [
+        "Sources/Library.swift"
+    ],
+)
+
+swift_library(
+    name = "AppLibrary",
+    srcs = [
+        "Sources/App.swift",
+    ],
+    deps = [
+        ":FrameworkLibrary",
+    ],
+)
+
+ios_framework(
+    name = "iOSFramework",
+    bundle_id = "com.qyang.iOSFramework",
+    minimum_os_version = "17.0",
+    families = [
+        "iphone",
+        "ipad",
+    ],
+    deps = [
+        ":FrameworkLibrary"
+    ],
+    infoplists = [
+        ":Info.plist"
+    ],
+)
+
+ios_application(
+    name = "iOSApplication",
+    bundle_id = "com.qyang.iOSApplication",
+    minimum_os_version = "17.0",
+    families = [
+        "iphone",
+        "ipad",
+    ],
+    infoplists = [
+        ":Info.plist"
+    ],
+    frameworks = [
+        ":iOSFramework",
+    ],
+    deps = [
+        ":AppLibrary",
+    ]
+)
+
