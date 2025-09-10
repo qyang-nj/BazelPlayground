@@ -1,0 +1,12 @@
+
+load("@build_bazel_rules_swift//swift:swift.bzl", "swift_library")
+
+swift_library(
+    name = "ModuleB",
+    module_name = "ModuleB",
+    srcs = ["ModuleB.swift"],
+    # Even though ModuleB has `internal import ModuleA`, if we change `deps` to `private_deps` here, `bazel build //...` will fail.
+    # private_deps = ["//ModuleA:ModuleA"],
+    deps = ["//ModuleA:ModuleA"],
+    visibility = ["//visibility:public"],
+)
